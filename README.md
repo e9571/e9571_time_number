@@ -1,7 +1,12 @@
-e9571_time_number Usage Examples
-This document provides examples of using the e9571_time_number module functions in a Rust program, tailored for casino scenarios such as generating timestamps, unique IDs, and time encodings.
-Source Code Example
-Below is a Rust program demonstrating the usage of various functions from the e9571_time_number module.
+# e9571_time_number Usage Examples
+
+This document provides examples of using the `e9571_time_number` module functions in a Rust program, tailored for casino scenarios such as generating timestamps, unique IDs, and time encodings.
+
+## Source Code Example
+
+Below is a Rust program demonstrating the usage of various functions from the `e9571_time_number` module.
+
+```rust
 use e9571_time_number::e9571_time_number::*;
 
 fn main() {
@@ -81,33 +86,34 @@ fn main() {
     println!("\n=== res_id Example ===");
     println!("High-precision sequential ID (type=TEST): {}", res_id("TEST"));
 }
+```
 
-Explanation of Functions
-The e9571_time_number module provides utility functions for handling time and number-related operations in a casino context, such as generating timestamps, encoding time formats, and creating unique IDs.
+## Explanation of Functions
 
-create_format_time: Generates a timestamp in various formats (e.g., time, millisecond, Unix timestamp).
-unix_number: Converts a time string to a Unix timestamp.
-unix_time: Converts a Unix timestamp to a readable time string.
-time_standard: Converts a millisecond timestamp to different formats (e.g., Unix or time string).
-group_id_sec: Generates a group ID, optionally signed with a currency (e.g., BTC).
-create_time_id: Parses a time string into components (sign, day, hour, minute).
-data_sign_decode: Decodes a compact time string into a readable format.
-data_sign_encode: Encodes a time string into a compact format, supporting multiple input formats.
-get_time_str: Extracts specific components (year, month, day, etc.) from a time string.
-random: Generates a random number within a specified range.
-res_id: Generates a high-precision sequential ID based on a type identifier.
+The `e9571_time_number` module provides utility functions for handling time and number-related operations in a casino context, such as generating timestamps, encoding time formats, and creating unique IDs.
 
-Casino Scenario Usage
+1. **`create_format_time`**: Generates a timestamp in various formats (e.g., time, millisecond, Unix timestamp).
+2. **`unix_number`**: Converts a time string to a Unix timestamp.
+3. **`unix_time`**: Converts a Unix timestamp to a readable time string.
+4. **`time_standard`**: Converts a millisecond timestamp to different formats (e.g., Unix or time string).
+5. **`group_id_sec`**: Generates a group ID, optionally signed with a currency (e.g., BTC).
+6. **`create_time_id`**: Parses a time string into components (sign, day, hour, minute).
+7. **`data_sign_decode`**: Decodes a compact time string into a readable format.
+8. **`data_sign_encode`**: Encodes a time string into a compact format, supporting multiple input formats.
+9. **`get_time_str`**: Extracts specific components (year, month, day, etc.) from a time string.
+10. **`random`**: Generates a random number within a specified range.
+11. **`res_id`**: Generates a high-precision sequential ID based on a type identifier.
+
+## Casino Scenario Usage
+
 These functions are useful in casino applications for:
+- Tracking betting timestamps (`create_format_time`, `unix_number`, `unix_time`).
+- Generating unique identifiers for bets or sessions (`group_id_sec`, `res_id`).
+- Encoding/decoding time data for records or displays (`data_sign_encode`, `data_sign_decode`).
+- Extracting time components for analytics or scheduling (`get_time_str`, `create_time_id`).
+- Generating random numbers for game mechanics or IDs (`random`).
 
-Tracking betting timestamps (create_format_time, unix_number, unix_time).
-Generating unique identifiers for bets or sessions (group_id_sec, res_id).
-Encoding/decoding time data for records or displays (data_sign_encode, data_sign_decode).
-Extracting time components for analytics or scheduling (get_time_str, create_time_id).
-Generating random numbers for game mechanics or IDs (random).
-
-Notes
-
-The example assumes the e9571_time_number module is available and correctly implemented.
-The output of each function depends on the system time and specific implementation details.
-For production use, add error handling and input validation to ensure robustness.
+## Notes
+- The example assumes the `e9571_time_number` module is available and correctly implemented.
+- The output of each function depends on the system time and specific implementation details.
+- For production use, add error handling and input validation to ensure robustness.
