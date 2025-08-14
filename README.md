@@ -4,12 +4,12 @@ use e9571_time_number::e9571_time_number::*;
 
 fn main() {
     // 示例 1: create_format_time
-    println!("=== create_format_time 示例 ===");
+    println!("=== create_format_time 示例 ===");  
     let formats = [
         "time", "msec", "micro", "nano", "unix", "unix_micro",
         "unix_msec", "unix_nano", "time_str", "msec_str",
         "micro_str", "nano_str", "dir", "invalid"
-    ];
+    ];  
     for format in formats {
         println!("格式 {}: {}", format, create_format_time(format));
     }
