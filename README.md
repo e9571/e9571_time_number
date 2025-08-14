@@ -1,57 +1,59 @@
-# e9571_time_number Call example
-
+e9571_time_number Usage Examples
+This document provides examples of using the e9571_time_number module functions in a Rust program, tailored for casino scenarios such as generating timestamps, unique IDs, and time encodings.
+Source Code Example
+Below is a Rust program demonstrating the usage of various functions from the e9571_time_number module.
 use e9571_time_number::e9571_time_number::*;
 
 fn main() {
-    // 示例 1: create_format_time
-    println!("=== create_format_time 示例 ===");  
+    // Example 1: create_format_time
+    println!("=== create_format_time Example ===");
     let formats = [
-        "time", "msec", "micro", "nano", "unix", "unix_micro",
-        "unix_msec", "unix_nano", "time_str", "msec_str",
+        "time", "msec", "micro", "nano", "unix", "unix_micro", 
+        "unix_msec", "unix_nano", "time_str", "msec_str", 
         "micro_str", "nano_str", "dir", "invalid"
-    ];  
+    ];
     for format in formats {
-        println!("格式 {}: {}", format, create_format_time(format));
+        println!("Format {}: {}", format, create_format_time(format));
     }
 
-    // 示例 2: unix_number
-    println!("\n=== unix_number 示例 ===");
+    // Example 2: unix_number
+    println!("\n=== unix_number Example ===");
     let time_str = "2025-08-09 08:00:00";
-    println!("时间字符串 {} 转换为 Unix 时间戳: {}", time_str, unix_number(time_str));
+    println!("Time string {} converted to Unix timestamp: {}", time_str, unix_number(time_str));
 
-    // 示例 3: unix_time
-    println!("\n=== unix_time 示例 ===");
-    let unix_str = "1723161600"; // 2025-08-09 08:00:00 的 Unix 时间戳
-    println!("Unix 时间戳 {} 转换为时间: {}", unix_str, unix_time(unix_str));
+    // Example 3: unix_time
+    println!("\n=== unix_time Example ===");
+    let unix_str = "1723161600"; // Unix timestamp for 2025-08-09 08:00:00
+    println!("Unix timestamp {} converted to time: {}", unix_str, unix_time(unix_str));
 
-    // 示例 4: time_standard
-    println!("\n=== time_standard 示例 ===");
-    let unix_millis = "1723161600000"; // 毫秒级时间戳
-    println!("毫秒时间戳 {} 转换为 Unix: {}", unix_millis, time_standard(unix_millis, "unix"));
-    println!("毫秒时间戳 {} 转换为时间: {}", unix_millis, time_standard(unix_millis, "time"));
+    // Example 4: time_standard
+    println!("\n=== time_standard Example ===");
+    let unix_millis = "1723161600000"; // Millisecond timestamp
+    println!("Millisecond timestamp {} converted to Unix: {}", unix_millis, time_standard(unix_millis, "unix"));
+    println!("Millisecond timestamp {} converted to time: {}", unix_millis, time_standard(unix_millis, "time"));
 
-    // 示例 5: group_id_sec
-    println!("\n=== group_id_sec 示例 ===");
-    println!("无符号 Group ID: {}", group_id_sec(""));
-    println!("带符号 Group ID (BTC): {}", group_id_sec("BTC"));
+    // Example 5: group_id_sec
+    println!("\n=== group_id_sec Example ===");
+    println!("Unsigned Group ID: {}", group_id_sec(""));
+    println!("Signed Group ID (BTC): {}", group_id_sec("BTC"));
 
-    // 示例 6: create_time_id
-    println!("\n=== create_time_id 示例 ===");
+    // Example 6: create_time_id
+    println!("\n=== create_time_id Example ===");
     let time_str = "2025-08-09 08:00:00";
     let (time_sign, date_day, date_hour, date_minute) = create_time_id(time_str);
-    println!("时间字符串 {} 解析结果:", time_str);
-    println!("  time_sign: {}", time_sign);
-    println!("  date_day: {}", date_day);
-    println!("  date_hour: {}", date_hour);
-    println!("  date_minute: {}", date_minute);
+    println!("Time string {} parsed result:", time_str);
+    println!(" time_sign: {}", time_sign);
+    println!(" date_day: {}", date_day);
+    println!(" date_hour: {}", date_hour);
+    println!(" date_minute: {}", date_minute);
 
-    // 示例 7: data_sign_decode
-    println!("\n=== data_sign_decode 示例 ===");
+    // Example 7: data_sign_decode
+    println!("\n=== data_sign_decode Example ===");
     let compact_time = "20250809080000";
-    println!("紧凑时间 {} 解码为: {}", compact_time, data_sign_decode(compact_time));
+    println!("Compact time {} decoded to: {}", compact_time, data_sign_decode(compact_time));
 
-    // 示例 8: data_sign_encode
-    println!("\n=== data_sign_encode 示例 ===");
+    // Example 8: data_sign_encode
+    println!("\n=== data_sign_encode Example ===");
     let input_times = [
         "2025-08-09 08:00:00",
         "2025/08/09 08:00:00",
@@ -60,22 +62,52 @@ fn main() {
         "2025-08-09T08:00:00",
     ];
     for input in input_times {
-        println!("时间 {} 编码为: {}", input, data_sign_encode(input));
+        println!("Time {} encoded to: {}", input, data_sign_encode(input));
     }
 
-    // 示例 9: get_time_str
-    println!("\n=== get_time_str 示例 ===");
+    // Example 9: get_time_str
+    println!("\n=== get_time_str Example ===");
     let time_str = "2025-08-09 08:00:00";
     let components = ["y", "m", "d", "h", "i", "s", "invalid"];
     for component in components {
-        println!("时间 {} 的 {} 部分: {}", time_str, component, get_time_str(time_str, component));
+        println!("Component {} of time {}: {}", component, time_str, get_time_str(time_str, component));
     }
 
-    // 示例 10: random
-    println!("\n=== random 示例 ===");
-    println!("随机数 (10000-99999): {}", random(10000, 99999));
+    // Example 10: random
+    println!("\n=== random Example ===");
+    println!("Random number (10000-99999): {}", random(10000, 99999));
 
-    // 示例 11: res_id
-    println!("\n=== res_id 示例 ===");
-    println!("高精度时序 ID (type=TEST): {}", res_id("TEST"));
+    // Example 11: res_id
+    println!("\n=== res_id Example ===");
+    println!("High-precision sequential ID (type=TEST): {}", res_id("TEST"));
 }
+
+Explanation of Functions
+The e9571_time_number module provides utility functions for handling time and number-related operations in a casino context, such as generating timestamps, encoding time formats, and creating unique IDs.
+
+create_format_time: Generates a timestamp in various formats (e.g., time, millisecond, Unix timestamp).
+unix_number: Converts a time string to a Unix timestamp.
+unix_time: Converts a Unix timestamp to a readable time string.
+time_standard: Converts a millisecond timestamp to different formats (e.g., Unix or time string).
+group_id_sec: Generates a group ID, optionally signed with a currency (e.g., BTC).
+create_time_id: Parses a time string into components (sign, day, hour, minute).
+data_sign_decode: Decodes a compact time string into a readable format.
+data_sign_encode: Encodes a time string into a compact format, supporting multiple input formats.
+get_time_str: Extracts specific components (year, month, day, etc.) from a time string.
+random: Generates a random number within a specified range.
+res_id: Generates a high-precision sequential ID based on a type identifier.
+
+Casino Scenario Usage
+These functions are useful in casino applications for:
+
+Tracking betting timestamps (create_format_time, unix_number, unix_time).
+Generating unique identifiers for bets or sessions (group_id_sec, res_id).
+Encoding/decoding time data for records or displays (data_sign_encode, data_sign_decode).
+Extracting time components for analytics or scheduling (get_time_str, create_time_id).
+Generating random numbers for game mechanics or IDs (random).
+
+Notes
+
+The example assumes the e9571_time_number module is available and correctly implemented.
+The output of each function depends on the system time and specific implementation details.
+For production use, add error handling and input validation to ensure robustness.
