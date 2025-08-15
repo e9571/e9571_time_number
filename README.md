@@ -85,6 +85,13 @@ fn main() {
     // Example 11: res_id
     println!("\n=== res_id Example ===");
     println!("High-precision sequential ID (type=TEST): {}", res_id("TEST"));
+
+    // Example 12: generate_random_number
+    println!("\n=== generate_random_number Example ===");
+    match generate_random_number(1, 100) {
+        Ok(num) => println!("Generated random number [1, 100]: {}", num),
+        Err(e) => println!("Error generating random number: {}", e),
+    }
 }
 ```
 
@@ -101,8 +108,9 @@ The `e9571_time_number` module provides utility functions for handling time and 
 7. **`data_sign_decode`**: Decodes a compact time string into a readable format.
 8. **`data_sign_encode`**: Encodes a time string into a compact format, supporting multiple input formats.
 9. **`get_time_str`**: Extracts specific components (year, month, day, etc.) from a time string.
-10. **`random`**: Generates a random number within a specified range.
+10. **`random`**: Generate a random number within a specified range using seconds.
 11. **`res_id`**: Generates a high-precision sequential ID based on a type identifier.
+12. **`generate_random_number`**: Generate a random number within a specified range using milliseconds.
 
 ## Casino Scenario Usage
 
@@ -111,7 +119,7 @@ These functions are useful in casino applications for:
 - Generating unique identifiers for bets or sessions (`group_id_sec`, `res_id`).
 - Encoding/decoding time data for records or displays (`data_sign_encode`, `data_sign_decode`).
 - Extracting time components for analytics or scheduling (`get_time_str`, `create_time_id`).
-- Generating random numbers for game mechanics or IDs (`random`).
+- Generating random numbers for game mechanics or IDs (`random`,`generate_random_number`).
 
 ## Notes
 - The example assumes the `e9571_time_number` module is available and correctly implemented.

@@ -1,18 +1,17 @@
 use std::time::{SystemTime, UNIX_EPOCH};
 use chrono::{DateTime, Local, TimeZone};
-use rand::{thread_rng, Rng};
+use rand::{ Rng, rngs::StdRng, SeedableRng};
 
 pub mod e9571_time_number {
     use super::*;
 
-    /// Go 语言时间专用格式化函数，返回常规时间、文件名时间或 Unix 时间
+    /// Format the current time based on the specified type
+    /// Returns formatted time, filename-compatible time, or Unix timestamp
     pub fn create_format_time(type_str: &str) -> String {
         let now = SystemTime::now();
         let timestamp = now.duration_since(UNIX_EPOCH).unwrap().as_secs();
         let datetime: DateTime<Local> = DateTime::from(now);
-
         let mut str_time = String::new();
-
         match type_str {
             "time" => str_time = datetime.format("%Y-%m-%d %H:%M:%S").to_string(),
             "msec" => str_time = datetime.format("%Y-%m-%d %H:%M:%S%.3f").to_string(),
@@ -47,11 +46,10 @@ pub mod e9571_time_number {
             "dir" => str_time = datetime.format("%Y%m%d").to_string(),
             _ => str_time = "help:time,msec,micro,nano,unix,unix_micro,unix_msec,unix_nano,time_str,msec_str,micro_str,nano_str".to_string(),
         }
-
         str_time
     }
 
-    /// 将指定时间格式转换为 Unix 时间戳
+    /// Convert a time string to Unix timestamp
     pub fn unix_number(time_str: &str) -> String {
         let time_str = time_str.replace("/", "-");
         let loc = chrono::offset::FixedOffset::east_opt(8 * 3600).unwrap(); // Asia/Shanghai
@@ -61,7 +59,7 @@ pub mod e9571_time_number {
         }
     }
 
-    /// 将 Unix 时间戳转换为指定时间格式
+    /// Convert a Unix timestamp to formatted time
     pub fn unix_time(unix_str: &str) -> String {
         if unix_str.len() != 10 {
             return unix_str.to_string();
@@ -75,7 +73,7 @@ pub mod e9571_time_number {
         }
     }
 
-    /// 获取币安标准时间，返回 Unix 或时间格式
+    /// Get Binance standard time in Unix or formatted time
     pub fn time_standard(unix: &str, type_str: &str) -> String {
         if unix.len() != 13 {
             return String::new();
@@ -87,7 +85,7 @@ pub mod e9571_time_number {
         }
     }
 
-    /// 生成高精度秒级 Group ID
+    /// Generate high-precision second-level Group ID
     pub fn group_id_sec(symbol: &str) -> String {
         let mut group_id = create_format_time("time");
         group_id = group_id.replace(" ", "").replace(":", "").replace("-", "");
@@ -98,7 +96,7 @@ pub mod e9571_time_number {
         }
     }
 
-    /// 格式化指定时间，生成数据简写与时序标志位
+    /// Format a time string to generate data shorthand and time flags
     pub fn create_time_id(time_str: &str) -> (String, String, String, String) {
         let layout = "%Y-%m-%d %H:%M:%S";
         match Local.datetime_from_str(time_str, layout) {
@@ -113,7 +111,7 @@ pub mod e9571_time_number {
         }
     }
 
-    /// 将时间字符串从 "20060102150405" 格式转换为 "2006-01-02 15:04:05"
+    /// Convert time string from "20060102150405" to "2006-01-02 15:04:05"
     pub fn data_sign_decode(input: &str) -> String {
         match Local.datetime_from_str(input, "%Y%m%d%H%M%S") {
             Ok(t) => t.format("%Y-%m-%d %H:%M:%S").to_string(),
@@ -124,7 +122,7 @@ pub mod e9571_time_number {
         }
     }
 
-    /// 将任意格式的时间字符串转换为 "20060102150405" 格式
+    /// Convert any time string to "20060102150405" format
     pub fn data_sign_encode(input: &str) -> String {
         let formats = vec![
             "%Y-%m-%d %H:%M:%S",
@@ -137,31 +135,27 @@ pub mod e9571_time_number {
             "%a, %d %b %Y %H:%M:%S GMT",
             "%d %b %y %H:%M GMT",
         ];
-
         for format in formats {
             if let Ok(parsed_time) = Local.datetime_from_str(input, format) {
                 return parsed_time.format("%Y%m%d%H%M%S").to_string();
             }
         }
-
         println!("unable to parse time string with any known format");
         String::new()
     }
 
-    /// 获取时间戳中的指定标志位（年、月、日、小时、分、秒）
+    /// Get specific time component (year, month, day, hour, minute, second) from a time string
     pub fn get_time_str(value: &str, type_str: &str) -> String {
         if value.len() != 19 {
             println!("Length_err {} {}", value.len(), value);
             return value.to_string();
         }
-
         let value = value.replace("/", "-");
         let (time_id, _, _, _) = create_time_id(&value);
         if time_id.len() != 14 {
             println!("Length_err {} {}", time_id.len(), time_id);
             return value.to_string();
         }
-
         match type_str.to_lowercase().as_str() {
             "y" => time_id[0..4].to_string(),
             "m" => time_id[4..6].to_string(),
@@ -173,14 +167,36 @@ pub mod e9571_time_number {
         }
     }
 
-    /// 生成 min 到 max 之间的随机整数
+    /// Generate a random integer in the specified range
     pub fn random(min: i32, max: i32) -> i32 {
-        thread_rng().gen_range(min..max)
+        rand::thread_rng().gen_range(min..=max)
     }
 
-    /// 生成高精度时序 ID
+    /// Generate high-precision time-based ID
     pub fn res_id(type_str: &str) -> String {
         let myrand = random(10000, 99999);
         format!("{}{}{}", create_format_time("msec_str"), myrand, type_str)
+    }
+
+    /// Generate a random integer in the specified range using nanoseconds as seed
+    /// Parameters:
+    /// - min: Minimum value (inclusive)
+    /// - max: Maximum value (inclusive)
+    /// Returns: Random integer or an error
+    pub fn generate_random_number(min: i32, max: i32) -> Result<i32, String> {
+        // Validate input parameters
+        if min > max {
+            return Err(format!("Minimum value {} cannot be greater than maximum value {}", min, max));
+        }
+
+        // Use nanoseconds as seed for random number generator
+        let nanos = SystemTime::now()
+            .duration_since(UNIX_EPOCH)
+            .map(|d| d.as_nanos() as u64)
+            .unwrap_or(0);
+        let mut rng = StdRng::seed_from_u64(nanos);
+
+        // Generate random number in [min, max] range
+        Ok(rng.random_range(min..=max))
     }
 }
